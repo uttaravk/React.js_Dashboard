@@ -40,42 +40,20 @@ class Dashboard extends Component {
       vendors:0,
       vendorRevenue:0,
       datapie: {
-                  labels: ["20%", "40%", "40%"],
-                  series: [20, 40, 40]
+                  labels: [],
+                  series: []
               },
       legendpie:{
-                  names: ["Open", "Bounce", "Unsubscribe"],
+                  names: ["Theatres", "Restaurants", "ID verification"],
                   types: ["info", "danger", "warning"]
                 },
       databar:{
-        labels: [
-          "AMC Pacific 11",
-          "Big Picture",
-          "Zigogo",
-          "Central Cinemas",
-          "Jones Playhouse",
-          "Cinerama",
-          "Peavine Alley",
-          "Lynwood Theatres"
-        ],
-        series: [
-          [50, 44, 32, 78, 55, 45, 32, 43]
-        ]
+        labels: [],
+        series: []
       },
       dataSales:{
-        labels: [
-          "AMC Pacific 11",
-          "Big Picture",
-          "Zigogo",
-          "Central Cinemas",
-          "Jones Playhouse",
-          "Cinerama",
-          "Peavine Alley",
-          "Lynwood Theatres"
-        ],
-        series: [
-          [287, 385, 490, 492, 554, 586, 698, 695]
-        ]
+        labels: [],
+        series: []
       }
               
       
@@ -139,7 +117,7 @@ class Dashboard extends Component {
             .then(res => {
               console.log(res);
               this.setState({monthYear:res.data.month});
-              console.log("vendor revenue");
+              console.log("month");
               console.log(this.state.monthYear);
             });
 
@@ -155,9 +133,9 @@ class Dashboard extends Component {
                 }
             })
               .then(res => {
+                console.log("datapie");
                 console.log(res);
                 this.setState({datapie:res.data.datapie});
-                this.setState({legendpie:res.data.legendpie});
               });
             axios.get(`http://information-xpress-node.herokuapp.com/charts/bar`, {
                 headers:
@@ -168,8 +146,9 @@ class Dashboard extends Component {
                   }
               })
                 .then(res => {
+                  console.log("databar");
                   console.log(res);
-                  this.setState({databar:res.data.databar});
+                  this.setState({databar:res.data});
                 });
             axios.get(`http://information-xpress-node.herokuapp.com/charts/line`, {
                   headers:
@@ -180,8 +159,9 @@ class Dashboard extends Component {
                     }
                 })
                   .then(res => {
+                    console.log("datasales");
                     console.log(res);
-                    this.setState({dataSales:res.data.dataSales});
+                    this.setState({dataSales:res.data});
                   });
 
   }
@@ -234,9 +214,9 @@ class Dashboard extends Component {
             <Col md={6}>
               <Card
                 statsIcon="fa fa-clock-o"
-                title="Email Statistics"
-                category="Last Campaign Performance"
-                stats="Campaign sent 2 days ago"
+                title="Revenue distribution"
+                category="Source of Revenue"
+                stats="Revenue distribution stats"
                 content={
                   <div
                     id="chartPreferences"
