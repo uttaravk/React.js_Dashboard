@@ -18,6 +18,7 @@ import {
   legendBar
 } from "variables/Variables.jsx";
 
+
 class Dashboard extends Component {
   createLegend(json) {
     var legend = [];
@@ -36,38 +37,38 @@ class Dashboard extends Component {
           <Row>
             <Col lg={3} sm={6}>
               <StatsCard
-                bigIcon={<i className="pe-7s-server text-warning" />}
+                bigIcon={<i className="pe-7s-users text-success" />}
                 statsText="Registered Users"
                 statsValue="9493"
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
+                statsIcon=""
+                statsIconText=""
+              />
+            </Col>
+            <Col lg={3} sm={6}>
+              <StatsCard
+                bigIcon={<i className="pe-7s-shopbag text-success" />}
+                statsText="Partners"
+                statsValue="155"
+                statsIcon=""
+                statsIconText=""
               />
             </Col>
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
-                statsText="Partners"
-                statsValue="155"
-                statsIcon={<i className="fa fa-calendar-o" />}
-                statsIconText="Last day"
-              />
-            </Col>
-            <Col lg={3} sm={6}>
-              <StatsCard
-                bigIcon={<i className="pe-7s-graph1 text-danger" />}
                 statsText="Total Revenue"
                 statsValue="$23050"
-                statsIcon={<i className="fa fa-clock-o" />}
-                statsIconText="In the last hour"
+                statsIcon=""
+                statsIconText=""
               />
             </Col>
             <Col lg={3} sm={6}>
               <StatsCard
-                bigIcon={<i className="fa fa-twitter text-info" />}
+                bigIcon={<i className="pe-7s-timer text-success" />}
                 statsText="Month/Year"
-                statsValue="January : Dropdown daallo"
-                statsIcon={<i className="fa fa-refresh" />}
-                statsIconText="Updated now"
+                statsValue="January"
+                statsIcon=""
+                statsIconText=""
               />
             </Col>
           </Row>
