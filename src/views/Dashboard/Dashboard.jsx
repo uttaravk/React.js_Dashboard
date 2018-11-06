@@ -5,6 +5,7 @@ import { Grid, Row, Col } from "react-bootstrap";
 import { Card } from "components/Card/Card.jsx";
 import { StatsCard } from "components/StatsCard/StatsCard.jsx";
 import { Tasks } from "components/Tasks/Tasks.jsx";
+import axios from 'axios';
 import {
   dataPie,
   legendPie,
@@ -30,6 +31,163 @@ class Dashboard extends Component {
     }
     return legend;
   }
+
+  constructor(props){
+    super(props);
+    this.state={
+      registeredUsers:0,
+      monthYear:"",
+      vendors:0,
+      vendorRevenue:0,
+      datapie: {
+                  labels: ["20%", "40%", "40%"],
+                  series: [20, 40, 40]
+              },
+      legendpie:{
+                  names: ["Open", "Bounce", "Unsubscribe"],
+                  types: ["info", "danger", "warning"]
+                },
+      databar:{
+        labels: [
+          "AMC Pacific 11",
+          "Big Picture",
+          "Zigogo",
+          "Central Cinemas",
+          "Jones Playhouse",
+          "Cinerama",
+          "Peavine Alley",
+          "Lynwood Theatres"
+        ],
+        series: [
+          [50, 44, 32, 78, 55, 45, 32, 43]
+        ]
+      },
+      dataSales:{
+        labels: [
+          "AMC Pacific 11",
+          "Big Picture",
+          "Zigogo",
+          "Central Cinemas",
+          "Jones Playhouse",
+          "Cinerama",
+          "Peavine Alley",
+          "Lynwood Theatres"
+        ],
+        series: [
+          [287, 385, 490, 492, 554, 586, 698, 695]
+        ]
+      }
+              
+      
+    }
+  }
+
+  componentDidMount() {
+    axios.get(`http://information-xpress-node.herokuapp.com/users/count`, {
+      headers:
+        {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+          'Content-Type': 'application/json'
+        }
+    })
+      .then(res => {
+        console.log(res);
+        this.setState({registeredUsers:res.data.count});
+        console.log("Registered Users");
+        console.log(this.state.registeredUsers);
+      });
+
+      axios.get(`http://information-xpress-node.herokuapp.com/vendors/count`, {
+        headers:
+          {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+            'Content-Type': 'application/json'
+          }
+      })
+        .then(res => {
+          console.log(res);
+          this.setState({vendors:res.data.count});
+          console.log("Vendors");
+          console.log(this.state.vendors);
+        });
+      
+        axios.get(`http://information-xpress-node.herokuapp.com/vendors/revenue`, {
+          headers:
+            {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+              'Content-Type': 'application/json'
+            }
+        })
+          .then(res => {
+            console.log(res);
+            this.setState({vendorRevenue:res.data.revenue});
+            console.log("vendor revenue");
+            console.log(this.state.vendorRevenue);
+          });
+
+          axios.get(`http://information-xpress-node.herokuapp.com/month`, {
+            headers:
+              {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+                'Content-Type': 'application/json'
+              }
+          })
+            .then(res => {
+              console.log(res);
+              this.setState({monthYear:res.data.month});
+              console.log("vendor revenue");
+              console.log(this.state.monthYear);
+            });
+
+          //COMMENT FROM HERE
+
+
+            axios.get(`http://information-xpress-node.herokuapp.com/charts/pie`, {
+              headers:
+                {
+                  'Access-Control-Allow-Origin': '*',
+                  'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+                  'Content-Type': 'application/json'
+                }
+            })
+              .then(res => {
+                console.log(res);
+                this.setState({datapie:res.data.datapie});
+                this.setState({legendpie:res.data.legendpie});
+              });
+            axios.get(`http://information-xpress-node.herokuapp.com/charts/bar`, {
+                headers:
+                  {
+                    'Access-Control-Allow-Origin': '*',
+                    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+                    'Content-Type': 'application/json'
+                  }
+              })
+                .then(res => {
+                  console.log(res);
+                  this.setState({databar:res.data.databar});
+                });
+            axios.get(`http://information-xpress-node.herokuapp.com/charts/line`, {
+                  headers:
+                    {
+                      'Access-Control-Allow-Origin': '*',
+                      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+                      'Content-Type': 'application/json'
+                    }
+                })
+                  .then(res => {
+                    console.log(res);
+                    this.setState({dataSales:res.data.dataSales});
+                  });
+
+  }
+
+
+
   render() {
     return (
       <div className="content">
@@ -39,7 +197,7 @@ class Dashboard extends Component {
               <StatsCard
                 bigIcon={<i className="pe-7s-users text-success" />}
                 statsText="Registered Users"
-                statsValue="9493"
+                statsValue={this.state.registeredUsers}
                 statsIcon=""
                 statsIconText=""
               />
@@ -47,8 +205,8 @@ class Dashboard extends Component {
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-shopbag text-success" />}
-                statsText="Partners"
-                statsValue="155"
+                statsText="Vendors"
+                statsValue={this.state.vendors}
                 statsIcon=""
                 statsIconText=""
               />
@@ -56,8 +214,8 @@ class Dashboard extends Component {
             <Col lg={3} sm={6}>
               <StatsCard
                 bigIcon={<i className="pe-7s-wallet text-success" />}
-                statsText="Total Revenue"
-                statsValue="$23050"
+                statsText="Vendor Revenue"
+                statsValue={this.state.vendorRevenue}
                 statsIcon=""
                 statsIconText=""
               />
@@ -66,24 +224,65 @@ class Dashboard extends Component {
               <StatsCard
                 bigIcon={<i className="pe-7s-timer text-success" />}
                 statsText="Month/Year"
-                statsValue="January"
+                statsValue={this.state.monthYear}
                 statsIcon=""
                 statsIconText=""
               />
             </Col>
           </Row>
           <Row>
-            <Col md={8}>
+            <Col md={6}>
               <Card
+                statsIcon="fa fa-clock-o"
+                title="Email Statistics"
+                category="Last Campaign Performance"
+                stats="Campaign sent 2 days ago"
+                content={
+                  <div
+                    id="chartPreferences"
+                    className="ct-chart ct-perfect-fourth"
+                  >
+                    <ChartistGraph data={this.state.datapie} type="Pie" />
+                  </div>
+                }
+                legend={
+                  <div className="legend">{this.createLegend(this.state.legendpie)}</div>
+                }
+              />
+            </Col>
+            <Col md={6}>
+            <Card
+                id="chartActivity"
+                title="Vendor Revenue in Thousands"
+                category="All products including Taxes"
+                stats="Data information certified"
+                statsIcon="fa fa-check"
+                content={
+                  <div className="ct-chart">
+                    <ChartistGraph
+                      data={this.state.databar}
+                      type="Bar"
+                      options={optionsBar}
+                      responsiveOptions={responsiveBar}
+                    />
+                  </div>
+                }
+                legend={
+                  <div className="legend">{this.createLegend(legendBar)}</div>
+                }
+              />
+            </Col>
+            <Col md={12} >
+            <Card
                 statsIcon="fa fa-history"
                 id="chartHours"
-                title="Users Behavior"
+                title="Hits Per Vendor"
                 category="24 Hours performance"
                 stats="Updated 3 minutes ago"
                 content={
                   <div className="ct-chart">
                     <ChartistGraph
-                      data={dataSales}
+                      data={this.state.dataSales}
                       type="Line"
                       options={optionsSales}
                       responsiveOptions={responsiveSales}
@@ -96,66 +295,7 @@ class Dashboard extends Component {
                 }
               />
             </Col>
-            <Col md={4}>
-              <Card
-                statsIcon="fa fa-clock-o"
-                title="Email Statistics"
-                category="Last Campaign Performance"
-                stats="Campaign sent 2 days ago"
-                content={
-                  <div
-                    id="chartPreferences"
-                    className="ct-chart ct-perfect-fourth"
-                  >
-                    <ChartistGraph data={dataPie} type="Pie" />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{this.createLegend(legendPie)}</div>
-                }
-              />
-            </Col>
-          </Row>
 
-          <Row>
-            <Col md={6}>
-              <Card
-                id="chartActivity"
-                title="2014 Sales"
-                category="All products including Taxes"
-                stats="Data information certified"
-                statsIcon="fa fa-check"
-                content={
-                  <div className="ct-chart">
-                    <ChartistGraph
-                      data={dataBar}
-                      type="Bar"
-                      options={optionsBar}
-                      responsiveOptions={responsiveBar}
-                    />
-                  </div>
-                }
-                legend={
-                  <div className="legend">{this.createLegend(legendBar)}</div>
-                }
-              />
-            </Col>
-
-            <Col md={6}>
-              <Card
-                title="Tasks"
-                category="Backend development"
-                stats="Updated 3 minutes ago"
-                statsIcon="fa fa-history"
-                content={
-                  <div className="table-full-width">
-                    <table className="table">
-                      <Tasks />
-                    </table>
-                  </div>
-                }
-              />
-            </Col>
           </Row>
         </Grid>
       </div>
