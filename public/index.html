@@ -26,7 +26,40 @@
 
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
         <link href='//fonts.googleapis.com/css?family=Roboto:400,700,300' rel='stylesheet' type='text/css'>
+        <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+    <script type='text/javascript'>
+     google.charts.load('current', {
+       'packages': ['geochart'],
+       // Note: you will need to get a mapsApiKey for your project.
+       // See: https://developers.google.com/chart/interactive/docs/basic_load_libs#load-settings
+       'mapsApiKey': 'AIzaSyAEk0430YZLBaTcbIgW10XDGhaOAxi9Rgg'
+     });
+     google.charts.setOnLoadCallback(drawMarkersMap);
 
+      function drawMarkersMap() {
+      var data = google.visualization.arrayToDataTable([
+        ['City',   'Hits'],
+        ['Seattle',      27],
+        ['Spokane',     13],
+        ['Stevenson',    9],
+        ['Tacoma',     9],
+        ['Walla Walla',   65],
+        ['Yakima',     6],
+        ['Ritzville',   38],
+        ['Port Townsend',  37],
+        ['Port Orchard', 6]
+      ]);
+
+      var options = {
+        region: 'US',
+        displayMode: 'markers',
+        colorAxis: {colors: ['green']}
+      };
+
+      var chart = new google.visualization.GeoChart(document.getElementById('chart_div'));
+      chart.draw(data, options);
+    };
+    </script>
 
 
     </head>
@@ -37,6 +70,7 @@
         <div id="root">
 
         </div>
+        
         <!--
         This HTML file is a template.
         If you open it directly in the browser, you will see an empty page.
