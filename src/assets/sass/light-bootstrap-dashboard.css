@@ -488,7 +488,7 @@ a:focus, a:active, button::-moz-focus-inner, input::-moz-focus-inner, input[type
   background: rgba(203, 203, 210, 0.15);
   position: relative;
   float: right;
-  width: 100%;
+  width: calc(100%);
 }
 
 .main-panel>.content {
