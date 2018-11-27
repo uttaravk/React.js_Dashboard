@@ -61,7 +61,7 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    axios.get(`http://information-xpress-node.herokuapp.com/users/count`, {
+    axios.get(`http://information-xpress-node.herokuapp.com/user/count`, {
       headers:
         {
           'Access-Control-Allow-Origin': '*',

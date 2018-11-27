@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .arc text {
+            font: 12px arial;
+            text-anchor: middle;
+        }
+
+        .arc path {
+            stroke: #fff;
+        }
+
+        .title {
+            fill: green;
+        }
+    </style>
+
+    <script type = "text/javascript" src = "https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+<h4>Vendors by Category</h4>
+<svg width = "250" height = "250"></svg>
+<script>
+    let svg = d3.select("svg"),
+        width = svg.attr("width"),
+        height = svg.attr("height"),
+        radius = Math.min(width, height) / 2;
+
+    let g = svg.append("g")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+    let color = d3.scaleOrdinal([
+        'gray', 'green', 'brown', 'orange', 'yellow', 'red', 'purple'
+    ]);
+
+    let pie = d3.pie().value(function(d) {
+        return d.Percent;
+    });
+
+    let path = d3.arc()
+        .outerRadius(radius - 10).innerRadius(0);
+
+    let label = d3.arc()
+        .outerRadius(radius).innerRadius(radius - 80);
+
+    d3.csv("populations.csv", function(error, data) {
+        if (error) {
+            throw error;
+        }
+
+        let arc = g.selectAll(".arc")
+            .data(pie(data))
+            .enter()
+            .append("g")
+            .attr("class", "arc");
+
+        arc.append("path")
+            .attr("d", path)
+            .attr("fill", function(d) { return color(d.data.Categories); });
+
+        console.log(arc);
+
+        arc.append("text").attr("transform", function(d) {
+            return "translate(" + label.centroid(d) + ")";
+        })
+
+            .text(function(d) { return d.data.Categories; });
+    });
+
+    svg.append("g")
+        .attr("transform", "translate(" + (width / 2 - 120) + "," + 20 + ")")
+        .attr("class", "title")
+</script>
+</body>
+</html>
