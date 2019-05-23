@@ -1,4 +1,5 @@
-CMPE 280 Assignment 5
+CMPE 280 Group Project 
+Module: Dashboard
 
 Team Information
 
